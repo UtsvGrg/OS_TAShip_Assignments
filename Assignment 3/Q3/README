@@ -1,0 +1,16 @@
+I have written a small kernel module, which implements a kernel system call as a module. 
+The task of the system call is to read the entries of the process task_struct corresponding to any
+given process (supplied as input via command line argument) and prints the
+values of the following field: pid, user id, process group id (pgid) and command
+path. It is functional only when the module is loaded, not otherwise
+
+I have used module_param to take input through the command line argument
+and have gotton the task_struct pointer using find_get_pid and get_pid_task
+Once you have the task struct, all you have to do is the specific material using
+pointer to the task, comm, pid and uid
+
+To run the command
+1) make
+2) sudo insmod hello.ko param_num=3
+3) sudo dmesg
+4) sudo rmmod hello.ko

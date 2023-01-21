@@ -1,0 +1,20 @@
+I have written two programs P1 and P2. The first program P1 generates an
+array of 50 random strings (of characters) of fixed length each. P1 then sends
+a group of five consecutive elements of the array of strings to P2 along with
+the ID’s of the strings, where the ID is the index of the array corresponding
+to the string. The second program P2 needs to accept the received strings,
+and send back the highest ID received back to P1 to acknowledge the strings
+received. The program P2 simply prints the ID’s and the strings on the console.
+On receiving the acknowledged packet, P1 sends the next five strings, with the
+string elements starting from the successor of the acknowledged ID.
+
+Here in this part I have used the fifo, approach, fifo being unidirectional
+we need two to facilitate communication between the two process. I have created 
+a fifo using mkfifo("fifo_p1", 0777), and used the following functions for proper usage
+    f1 = open("fifo_p1", O_WRONLY);
+    write (f1, &idx, sizeof(int));
+    close(f1);
+
+Synchoronization is maintained as fifo used first in and first out approach
+therefore does not find any error of such sort. Also, the fifo's can be found
+using name of the fifo and its relative address.

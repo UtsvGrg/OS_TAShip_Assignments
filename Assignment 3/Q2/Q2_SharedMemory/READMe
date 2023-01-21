@@ -1,0 +1,5 @@
+Similar to the two, this also communicates between the two process. I have used posix complaint functions to create the shared memory, using shm_open, shm_unlink and mmap for the pointer creation. Basically one process writes the data
+pther reads and inreturn writes a confirmation of the reading, the confirmation is read by the first process and 
+responds to it by the next set of strings. The major problems encounter in the shared was the synchronization between
+the two process, as writing and reading are done using the same pointer, which I have solved using two approaches
+IN the first I have used a sleep function for better working and switching. While that works, i have also done the same by using semaphore locks and locking the specific part of the code, untils a signal is raised by the process that the process is complete

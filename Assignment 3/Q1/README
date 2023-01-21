@@ -1,0 +1,27 @@
+The dining philosophers problem contains five philosophers sitting on a round
+table can perform only one among two actions – eat and think. For eating, each
+of them requires two forks, one kept beside each person. Typically, allowing
+unrestricted access to the forks may result in a deadlock.
+
+Here in Q1_1A, where we have to maintian strict ordering, I have allowed the
+first philosopher to start thinking, then make him get the forks, eat and then place the forks.
+This ensures that a deadlock has never reached, as a time only one of the philospher is eating
+although, the major drawback to this is that, it is not efficent and forces others to wait.
+For that I have created and joined it, therefore sequentially executing the entire code.
+
+In Q1_1B, where we have to maintain concurrency and parrallelism along with ensuring that the race 
+or deadlock condition is not happening, I have added 5 semaphore locks each representing a fork
+to ensure that no two forks are taken simultaneously and the philosopher wait until that fork is free
+to eat
+
+In Q1_2A, I have also created two bowls, each represented by a semaphore, here the philospher can only eat 
+if there is any presence of any empty bowl, which I am checking using the sem_getvalue. If both of the bowls
+are occupied, then the philosphers are forced to wait until a bowl is freed.
+
+Here in Q1_2B, where we have to maintian strict ordering, I have allowed the
+first philosopher to start thinking, then make him get the forks, eat in a bowl and then place the forks.
+This ensures that a deadlock has never reached, as a time only one of the philospher is eating
+although, the major drawback to this is that, it is not efficent and forces others to wait.
+For that I have created and joined it, therefore sequentially executing the entire code.
+
+The question uses linking with lpthread and lrt for threads and semaphore respecively.
