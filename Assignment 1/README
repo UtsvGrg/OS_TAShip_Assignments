@@ -1,0 +1,153 @@
+UtsavGarg_2021108
+
+----OS Assignment 1 Description----
+
+This code is an attempt at designing a simple shell that can handle three internal and five external commands viz. ‘cd’, ‘pwd’, ‘echo’, ‘exit’ ‘ls’, ‘cat’, 
+‘date’ , ‘rm’ and ‘mkdir’ Two command line options for each command have been implemented (except exit). There are certain assumptions that have been taken 
+while implementing some commands and they will be listed down in their respective command’s sections.
+
+Also pthread_create() and pthread_join() has also been implemented in the function. Which futher uses system() in stdlib.h to work as terminal.
+
+Some important information/pointers and assumptions-
+
+Commands like rm can take multiple file names as arguments however, the maximum number of files that the requisite command can take at a time is specified 
+in the corresponding command section of this writeup.
+
+Double quotes are treated as is in the Linux bash: everything inside double quotes is considered a single entity. For example “folder name” is a single token.
+
+The size of the paths to a file cannot exceed more than 1024 characters. It would lead to a fault in the implementation. I have assumed that the size of 
+the path would always be less than 1024 characters.
+
+. (dot) represents the current directory and ..(dot dot) represents the parent directory.
+
+User can only choose one option at a time. All invalid options will be considered as file/directory name or will be reported for error depending on the command. 
+Error handling is mostly done via printf().
+
+-------------------------------------------------------Commands:------------------------------------------------------------------
+
+echo
+
+Format: echo [-option] [string]...
+
+Options: • --help :  display this help and exit
+         • *      :  display the files in the directory
+
+Assumptions: It only implements for direct input, no string formating for input of the form "xxx"
+
+Error handling and corner cases: Unless a write error occurs, echo will be success.
+                                 Even in case of no input, prints \n and gets ready for the next input
+
+
+date
+
+Format: date [option]
+
+Options: • -u : print the Coordinated Universal Time (UTC).
+         • -R : output the date/time in RFC 5322 format.
+         If no option is provided, “date” command would display current date and time in the default format.
+
+Assumptions: The user does not enter any date format. In case any other syntax than the one specified here is followed, a error message is displayed.
+
+Error handling and corner cases: • In case localtime() and gmtime() functions fail, the error message will be shown.
+                                 • In case of invalid format it prints error invalid command
+
+cat
+
+Format: cat [option] [file]...
+
+Options: • -n : number all output lines.
+         • -E : display $ at the end of each line.
+         If no option is provided, cat simply concatenates the file(s) to the stdout.
+
+Assumptions: The user should not input any more than 1 file
+Error handling and corner cases: • When the file is in a path in which even a single directory does not have search permission, cat would not be able to
+open the file and a permission denied message would be displayed. • When the file does not have read permission, cat would not be able to open the file and 
+a permission denied message would be displayed. • When the file does not exist in the specified directory, a file does not exist message will be displayed. 
+• In case there are more than 10 files provided at a time to cat or in case of any syntactical ambiguity that doesn’t adhere to the specified format, an 
+Invalid syntax error will be shown.
+
+ls
+
+Format: ls [option] [file]
+
+Options: • -a : do not ignore entries starting with . (dot)
+         • -A : do not list implied . And .. If no option is provided, all entries starting with . (dot) are ignored. This is the default mode.
+         • -d : prints the current directory file
+Assumptions: The user only enters at most single filename after ls [option] or else a error message will be shown. If the user enters any option except
+-a and -A, it will be treated as a directory name.
+
+Error handling/corner cases: • If the read permission is denied for the directory and/ or search permission is denied for any directory in the path,
+an error message  will be displayed. • If there is no existing directory as per the path/directory name input, then the error message will be displayed.
+• If there is a even a single component in the pathname (if it is the input) that is not a directory, the error message will be displayed.
+
+cd
+
+Format: cd [-P] [dir] or cd [-Pe] [dir]
+
+Options: • -P : use the physical directory structure with out following symbolic      	          links
+	   • -L : force symbolic links to be followed: resolve symbolic
+    		    links in DIR after processing instances of `..'
+	   • .. : returns to the parent directory
+ 	   • .  : returns to the current working directory
+	   • If no option is provided, -P option is the default assumption.
+
+Assumptions: The user would enter the mode -e as -Pe only and not as -P -e else there would be a syntactical error message shown.
+The default cd option is -P. The ‘current working directory’ refers to the current directory after resolution of symbolic links.
+
+Error handling/corner cases: • If permission to read or search even a single directory out of the of the provided path file is denied,
+an error message “Permission denied” will be displayed. • If the directory specified in the path/ or named doesn’t exist, “A no such file or directory” 
+message is displayed. • If the user tries to enter a file, “not s directory” error message is displayed. • If the path is a bad address,
+“bad address” error message will be displayed.
+
+pwd
+
+Format: pwd [option]
+
+Options: • -P : avoid symlinks.
+	   • —help : display help.
+         • —L : print the value of $PWD if it names the current working 			    directory.
+
+Assumptions: The default pwd option is -P.
+
+Error handling/corner cases: • In case there is a non allowance of read or search permission for any component of the pathname, an appropriate 
+error message is displayed. • If the control is in a directory already and its permissions are changed afterwards, pwd would still be able to display the path.
+• Any error occurring in the getcwd() function is being handled. The adequate error message will be displayed as well.
+
+mkdir
+
+Format: mkdir [-v] [-m mode] directory...
+
+Options: • -m : set file mode, not a=rwx, accepts octal modes only.
+	   • -v : print a message for each created directory.
+If no option is provided, the permission 0777 is set for each created directory, no message is printed after successful creation.
+
+Assumptions: The user should not input any more than 1 file
+
+Error handling and corner cases: • If the parent directory does not allow write permission, or even a single one of the directories in the path does 
+not allow permission, then an error message will be displayed. • If the directory already exists in the same location, the error message will be displayed.
+
+rm
+
+Format: rm [option] [file]...
+
+Options: • -f : ignore nonexistent files and arguments, never prompt.
+	   • -i : asks the user before deleting
+By default, rm does not remove directories. If no option is provided, the default mode would not remove directories and will prompt the user in case of errors.
+
+// Multiple file delete handeled
+
+Assumptions: In case there is a file that does not allow write permissions, rm would not be able to delete it, with any or no option whatsoever
+. f any option except -f or -d is provided, it will be treated as a file name If any option other than -f or -d is used, it would be considered 
+as the normal file/ directory name/path. The user should not input any more than 10 files at a time, in case of defaultIf a file is provided in 
+the rm -d option, it should have both read and write permissions to be removed, just like a directory.
+
+Error handling and corner cases: • When removing a directory, if even a single one of the directories in the path does not allow search permission,
+or the directory doesn’t allow read and write permissions, then an error message will be displayed. 
+• The -f mode is able to delete any file irrespective of the permissions without any prompt.
+• When removing a file in the default mode, if the file doesn’t allow write permissions or its path does not allow search permissions, 
+then an error message will be displayed.
+
+exit
+
+Format: exit
+Assumptions; NA
