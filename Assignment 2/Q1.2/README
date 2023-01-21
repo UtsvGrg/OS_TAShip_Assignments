@@ -1,0 +1,17 @@
+This code is written to teach linux processes and thier scheduling
+
+The file schedule_test.c has three forking functions, which run three forks
+with each different scheduling policy SCHED_OTHER, SCHED_FIFO, SCHED_RR
+
+We use fork() and execl() to run the bash file and compile the kernel with the
+given rev-config-9-gold. We run and compile the process three times with different
+policy and store the time taken inside the f1.txt 
+
+Now the data stored in the f1.txt is plotted on a bar graph using python numpy 
+and matplotlib, which is run by the c program by using fork and running bash file using 
+the system() command.
+
+The output let us know that, the fastest scheduling occurs for the FIFO, after which RR 
+and finally, Other. 
+
+The plotting of the bar graph takes the y-axis as time taken by the different process

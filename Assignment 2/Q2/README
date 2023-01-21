@@ -1,0 +1,18 @@
+In the question 2 for the OS assignment, the main aim of the program is to learn
+how patch file works and how syscall are added in the kernel, also how does the 
+syscall table and macros are used.
+
+Initally we git init the folder to store all the changes in the .git and therefore to 
+calculate the patchfile using the git diff. The patch file consist the change in the 
+new folder, creation of makefile and new syscall .c file. Also, in the syscall table 
+add the 451 entry which is new the syscall.
+
+This syscall added in the folder is need to be compiled in order to make its object file
+for the utilization of the syscall by the other .c files and processes. 
+
+One must ensure that it should create a new boot image and configure the bootloader and
+the add the pointer of the new kernel to the grub.
+
+For the creation of the twodcopy_syscall.c file, we have to use two c library function
+__copy_from_user and __copy_to_user. This main function of this syscall is to copy a 2D matrix
+to buffer and then copy the matrix from buffer to destination. 

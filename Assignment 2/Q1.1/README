@@ -1,0 +1,23 @@
+This code is written to teach linux pthreads and thier scheduling
+
+The file schedule_test.c has three functions
+count_a, count_b, count_c, one for each scheduling policy
+which is other, fifo and rr.
+
+In the function count_x, I change the priority of the thread created using
+pthread_setschedparam and using struct sched_param;
+This function use clock_gettime() to calculate the time required to count 2^32
+
+Finally using a file named fileopen.txt, I am storing all the data to compare the
+time it took to run these three thread. For thread creation we have used pthread_create
+and then after three creation, we are joining the thread simultaneously. 
+
+Now the data stored in the fileopen.txt is plotted on a bar graph using python numpy 
+and matplotlib, which is run by the c program by using fork and running bash file using 
+the system() command.
+
+The output let us know that, the fastest scheduling occurs for the FIFO, after which RR 
+and finally, Other. 
+
+The plotting of the bar graph, take priority on the x-axis and the y-axis as time taken by the 
+different process
